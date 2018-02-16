@@ -1,7 +1,7 @@
 OWNER=agoda
 IMAGE_NAME=adb-butler
 VCS_REF=`git rev-parse --short HEAD`
-IMAGE_VERSION=1.0.$(TRAVIS_BUILD_NUMBER)
+IMAGE_VERSION ?= 1.0.0
 PROXY ?=
 QNAME=$(PROXY)$(OWNER)/$(IMAGE_NAME)
 GIT_TAG=$(QNAME):$(VCS_REF)
@@ -23,7 +23,7 @@ tag:
 	docker tag $(GIT_TAG) $(LATEST_TAG)
 
 login:
-	@docker login -u "$(DOCKER_USER)" -p "$(DOCKER_PASS)"
+	@docker login -u "$(DOCKER_USER)" -p "$(DOCKER_PASS)" "$(PROXY)"
 
 push: login
 	docker push $(GIT_TAG)
