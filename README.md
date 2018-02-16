@@ -9,6 +9,14 @@ adb-butler is one of the components of [android-farm](https://github.com/agoda-c
 - adding notes to provided devices
 - automatic installation of test-butler for emulators
 
+# Building
+
+```console
+$ export DOCKER_USER=user
+$ export DOCKER_PASS=password
+$ make PROXY=docker-registry-url/ build tag login push
+```
+
 # License
 
 adb-butler is open source and available under the [Apache License, Version 2.0](LICENSE).
