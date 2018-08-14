@@ -17,7 +17,8 @@ r.connect({
       provider: {
           name: `${hostname}`
       },
-      status: 3
+      status: 3,
+      present: true
     })
     .withFields('serial', 'battery', 'provider')
     .run(conn, function(err, cursor) {
