@@ -1,7 +1,7 @@
 OWNER=agoda
 IMAGE_NAME=adb-butler
 VCS_REF=`git rev-parse --short HEAD`
-IMAGE_VERSION ?= 1.0.0
+IMAGE_VERSION ?= 1.0.1
 PROXY ?=
 QNAME=$(PROXY)$(OWNER)/$(IMAGE_NAME)
 GIT_TAG=$(QNAME):$(VCS_REF)
