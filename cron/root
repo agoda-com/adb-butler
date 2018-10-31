@@ -4,3 +4,4 @@
 * * * * * /usr/bin/node /metrics-battery.js
 * * * * * /usr/bin/node /get-local-offline.js | /bin/bash /adb-reconnect.sh
 * * * * * /usr/bin/node /get-local-unauthorized.js | /bin/bash /adb-reconnect.sh
+* * * * * /bin/bash /gnirehtet_cleanup.sh
