@@ -8,8 +8,8 @@ if [ "$GNIREHTET_ENABLED" = "false" ]; then
     echo "$output"
     if [[ "$output" =~ "com.genymobile.gnirehtet" ]]; then
       "$device has gnirehtet installed. Uninstalling..."
-      gnirehtet stop $device
-      gnirehtet uninstall $device
+      (cd /; exec ./gnirehtet stop $device)
+      (cd /; exec ./gnirehtet uninstall $device)
     fi
   done
 fi
