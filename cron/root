@@ -3,4 +3,3 @@
 * * * * * /usr/bin/node /label.js
 * * * * * /usr/bin/node /metrics-battery.js
 * * * * * /usr/bin/node /device-status-monitor.js | /bin/bash /adb-reconnect.sh
-* * * * * /bin/bash /gnirehtet_cleanup.sh
