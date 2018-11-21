@@ -7,7 +7,7 @@ rm -f $DL
 touch -f $DL
 sleep 10
 
-cd /
+cd / || exit
 
 function setup_gnirehtet {
   local DEVICE=$1
@@ -39,6 +39,14 @@ function clean_agoda_staff {
 
 }
 
+function setup_emulator {
+  local DEVICE=$1
+  local SERIAL
+  SERIAL=`hostname`
+
+  timeout -t 30 adb -s $DEVICE shell su root setprop marathon.serialno $SERIAL
+}
+
 while sleep 5; do
   echo -n | adb devices | egrep 'device$' | awk '{ print $1 }' | sort > $DL.new
   diff -u $DL $DL.new | grep '^[+][^+]' | sed -E 's/^\+//' | while read d; do
@@ -51,6 +59,11 @@ while sleep 5; do
     else
       echo Gonna cleanup gnrehtet for $d
       cleanup_gnirehtet $d
+    fi
+
+    if [ ! -z "$STF_PROVIDER_PUBLIC_IP" ]; then
+      # Emulator
+      setup_emulator $d
     fi
 
     clean_agoda_staff $d
