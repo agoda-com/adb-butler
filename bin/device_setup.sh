@@ -41,10 +41,14 @@ function clean_agoda_staff {
 
 function setup_emulator {
   local DEVICE=$1
-  local SERIAL
-  SERIAL=`hostname`
+  local MARATHON_SERIAL
+  MARATHON_SERIAL=$(timeout -t 30 adb -s $DEVICE shell getprop marathon.serialno)
 
-  timeout -t 30 adb -s $DEVICE shell su root setprop marathon.serialno $SERIAL
+  if [ -z "$MARATHON_SERIAL" ]; then
+    local SERIAL
+    SERIAL=`hostname`
+    timeout -t 30 adb -s $DEVICE shell su root setprop marathon.serialno $SERIAL
+  fi
 }
 
 while sleep 1; do
@@ -61,13 +65,15 @@ while sleep 1; do
       cleanup_gnirehtet $d
     fi
 
-    if [ ! -z "$STF_PROVIDER_PUBLIC_IP" ]; then
-      # Emulator
-      setup_emulator $d
-    fi
-
     clean_agoda_staff $d
   done
+
+  if [ ! -z "$STF_PROVIDER_PUBLIC_IP" ]; then
+    for d in `cat $DL.new`; do
+      # Emulator
+      setup_emulator $d
+    done
+  fi
 
   mv $DL.new $DL
 done
