@@ -47,7 +47,7 @@ function setup_emulator {
   timeout -t 30 adb -s $DEVICE shell su root setprop marathon.serialno $SERIAL
 }
 
-while sleep 5; do
+while sleep 1; do
   echo -n | adb devices | egrep 'device$' | awk '{ print $1 }' | sort > $DL.new
   diff -u $DL $DL.new | grep '^[+][^+]' | sed -E 's/^\+//' | while read d; do
 
