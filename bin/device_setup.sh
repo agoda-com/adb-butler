@@ -42,7 +42,7 @@ function clean_agoda_staff {
 function setup_emulator {
   local DEVICE=$1
   local MARATHON_SERIAL
-  MARATHON_SERIAL=$(timeout -t 30 adb -s $DEVICE shell getprop marathon.serialno)
+  MARATHON_SERIAL=$(timeout -t 30 adb -s $DEVICE shell getprop marathon.serialno  | tr -d '\r')
 
   if [ -z "$MARATHON_SERIAL" ]; then
     local SERIAL
