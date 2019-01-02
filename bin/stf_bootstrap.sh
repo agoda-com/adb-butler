@@ -26,7 +26,7 @@ else
   }
 
   clean() {
-    node /clean.js
+    /clean.js
     exit 0
   }
 
