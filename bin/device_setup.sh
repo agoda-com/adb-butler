@@ -48,6 +48,7 @@ function setup_emulator {
     local SERIAL
     SERIAL=`hostname`
     timeout -t 30 adb -s $DEVICE shell su root setprop marathon.serialno $SERIAL
+    timeout -t 30 adb -s $DEVICE shell su root pm disable org.chromium.webview_shell
   fi
 }
 
