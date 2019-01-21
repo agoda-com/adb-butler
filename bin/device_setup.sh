@@ -69,7 +69,7 @@ while sleep 1; do
       cleanup_gnirehtet $d
     fi
 
-    clean_agoda_staff $d
+#    clean_agoda_staff $d
   done
 
   if [ ! -z "$STF_PROVIDER_PUBLIC_IP" ]; then
