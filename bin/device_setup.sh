@@ -31,12 +31,13 @@ function cleanup_gnirehtet {
 function clean_agoda_staff {
   local DEVICE=$1
 
-  echo -n | timeout -t 30 adb -s $DEVICE uninstall com.agoda.mobile.consumer.debug.test
-  echo -n | timeout -t 30 adb -s $DEVICE uninstall com.agoda.mobile.consumer.debug
-  echo -n | timeout -t 30 adb -s $DEVICE uninstall com.agoda.mobile.consumer
-  echo -n | timeout -t 30 adb -s $DEVICE uninstall com.agoda.mobile.swipe.debug.test
-  echo -n | timeout -t 30 adb -s $DEVICE uninstall com.agoda.mobile.swipe.debug
+  echo -n | timeout -t 30 adb -s $DEVICE shell rm -rf /sdcard/fork /sdcard/marathon /sdcard/screenshotEspressoTesting
 
+  # echo -n | timeout -t 30 adb -s $DEVICE uninstall com.agoda.mobile.consumer.debug.test
+  # echo -n | timeout -t 30 adb -s $DEVICE uninstall com.agoda.mobile.consumer.debug
+  # echo -n | timeout -t 30 adb -s $DEVICE uninstall com.agoda.mobile.consumer
+  # echo -n | timeout -t 30 adb -s $DEVICE uninstall com.agoda.mobile.swipe.debug.test
+  # echo -n | timeout -t 30 adb -s $DEVICE uninstall com.agoda.mobile.swipe.debug
 }
 
 function setup_emulator {
@@ -69,7 +70,7 @@ while sleep 1; do
       cleanup_gnirehtet $d
     fi
 
-#    clean_agoda_staff $d
+    clean_agoda_staff $d
   done
 
   if [ ! -z "$STF_PROVIDER_PUBLIC_IP" ]; then
