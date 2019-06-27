@@ -1,13 +1,20 @@
 #!/usr/bin/env bash
 
+ls /tmp/one*.pid | while read p; do
+  echo ${p}
+  kill -KILL `cat ${p}`
+  rm -f ${p}
+done
+
 while true; do
-  sleep 30
   if [ "$GNIREHTET_ENABLED" = "true" ]; then
     adb devices | egrep 'e$' | awk '{ print $1 }' | while read d; do
-  	  echo $d
-  	  echo -n | timeout -t 5 adb -s $d reverse localabstract:gnirehtet tcp:31416
-  	  echo -n | timeout -t 10 adb -s $d shell am broadcast -a com.genymobile.gnirehtet.START -n com.genymobile.gnirehtet/.GnirehtetControlReceiver --esa dnsServers 10.120.1.123 &
+          echo ${d}
+          if [ ! -f /tmp/one_${d}.pid ]; then
+              /gnirehtet_reconnect_one.sh ${d} &
+              sleep 2
+          fi
     done
-    wait
   fi
+  sleep 30
 done
