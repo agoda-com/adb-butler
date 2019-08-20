@@ -56,11 +56,18 @@ function setup_emulator {
   fi
 }
 
+function kick_rebooter {
+  local DEVICE=$1
+  echo -n | timeout -t 30 adb -s $DEVICE shell am broadcast -a com.agoda.IGNITE -n com.agoda.connectionwatchdog/.BootReceiver
+}
+
 while sleep 1; do
   echo -n | adb devices | egrep 'device$' | awk '{ print $1 }' | sort > $DL.new
   diff -u $DL $DL.new | grep '^[+][^+]' | sed -E 's/^\+//' | while read d; do
 
     echo Connected $d
+
+    kick_rebooter $d
 
     if [ "$GNIREHTET_ENABLED" = "true" ]; then
       echo Gonna setup gnirehtet for $d
