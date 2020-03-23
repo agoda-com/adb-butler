@@ -20,6 +20,7 @@ r.connect({
       status: 3,
       present: true
     })
+    .withFields('serial', 'battery', 'provider')
     .run(conn, function(err, cursor) {
       if (err) throw err;
 
