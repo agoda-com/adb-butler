@@ -1,12 +1,7 @@
 #!/usr/bin/node
 
 var r = require('rethinkdb')
-var ip = process.env.STF_PROVIDER_PUBLIC_IP;
-
-if (!ip) {
-  console.log("IP is not selected");
-  process.exit(1);
-}
+var hostname = process.env.HOSTNAME;
 
 r.connect({
   host: process.env.RETHINKDB_URL,
@@ -17,13 +12,19 @@ r.connect({
   if (err) throw err;
 
   r.table('devices')
-    .filter({serial:ip+':10001'})
-    .delete()
-    .run(conn, function(err, something) {
+    .filter({
+      provider: {
+          name: `${hostname}`
+      },
+      status: 2
+    })
+    .withFields('serial')
+    .run(conn, function(err, cursor) {
       if (err) throw err;
 
+      cursor.each(function(err, serial) {
+        console.log(serial.serial);
+      })
       conn.close();
-      console.log('cleaned devices: ' + something['deleted']);
     });
-
 });
