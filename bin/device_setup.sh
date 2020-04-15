@@ -79,8 +79,6 @@ while sleep 1; do
     fi
 
     clean_agoda_staff $d
-
-    adb -s $d shell settings put global http_proxy $EMULATOR_PROXY
   done
 
   if [ ! -z "$STF_PROVIDER_PUBLIC_IP" ]; then

@@ -7,7 +7,9 @@ if [ -z "$STF_PROVIDER_PUBLIC_IP" ]; then
   wait
 else
   ip="$STF_PROVIDER_PUBLIC_IP"
+  proxy=$EMULATOR_PROXY
   echo "Remote device url is $ip"
+  echo "Proxy is $proxy"
 
   monitor() {
     while true; do
@@ -33,6 +35,7 @@ else
   bootstrap() {
     echo "Initiating bootstrap"
     timeout -t 20 adb -s $ip install /root/.android/test-butler-app-1.3.1.apk
+    timeout -t 30 adb -s $ip shell settings put global http_proxy $proxy
   }
 
   trap clean SIGINT
