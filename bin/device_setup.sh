@@ -54,9 +54,6 @@ function setup_emulator {
     if [ ! -z "$EMULATOR_TIMEZONE" ]; then
       timeout -t 30 adb -s $DEVICE shell su root setprop persist.sys.timezone "$EMULATOR_TIMEZONE"
     fi
-    if [ ! -z "$EMULATOR_PROXY" ]; then
-      adb -s $DEVICE shell settings put global http_proxy $EMULATOR_PROXY
-    fi
   fi
 }
 
@@ -82,6 +79,8 @@ while sleep 1; do
     fi
 
     clean_agoda_staff $d
+
+    adb -s $d shell settings put global http_proxy $EMULATOR_PROXY
   done
 
   if [ ! -z "$STF_PROVIDER_PUBLIC_IP" ]; then
