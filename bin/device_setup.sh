@@ -54,6 +54,10 @@ function setup_emulator {
     if [ ! -z "$EMULATOR_TIMEZONE" ]; then
       timeout -t 30 adb -s $DEVICE shell su root setprop persist.sys.timezone "$EMULATOR_TIMEZONE"
     fi
+    if [ ! -z "$EMULATOR_PROXY" ]; then
+      # required for old emulators
+      timeout -t 30 adb -s $DEVICE shell settings put global http_proxy $EMULATOR_PROXY
+    fi
   fi
 }
 
