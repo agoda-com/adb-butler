@@ -49,6 +49,9 @@ function setup_emulator {
     local SERIAL
     SERIAL=`hostname`
     timeout -t 30 adb -s $DEVICE shell su root setprop marathon.serialno $SERIAL
+  fi
+
+  if [[ ! -z "$MARATHON_SERIAL"  ]]; then
     timeout -t 30 adb -s $DEVICE shell su root pm disable org.chromium.webview_shell
     timeout -t 30 adb -s $DEVICE shell su root settings put secure spell_checker_enabled 0
     if [ ! -z "$EMULATOR_TIMEZONE" ]; then
