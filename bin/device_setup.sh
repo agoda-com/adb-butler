@@ -25,7 +25,7 @@ function setup_emulator {
   local MARATHON_SERIAL
   MARATHON_SERIAL=$(timeout -t 30 adb -s $DEVICE shell getprop marathon.serialno  | tr -d '\r')
   SPELL_CHECKER=$(adb -s $DEVICE shell settings get secure spell_checker_enabled)
-  CURRENT_TIMEZONE=$(adb -s $DEVICE shell getprop persist.sys.timezone)"
+  CURRENT_TIMEZONE=$(adb -s $DEVICE shell getprop persist.sys.timezone)
   EMULATOR_TIMEZONE="Asia/Bangkok"
 
 
@@ -37,11 +37,11 @@ function setup_emulator {
     timeout -t 30 adb -s $DEVICE shell su root pm disable org.chromium.webview_shell
   fi
 
-  if [[ "$SPELL_CHECKER" ne 0 ]]; then
+  if [[ "$SPELL_CHECKER" -ne 0 ]]; then
     timeout -t 30 adb -s $DEVICE shell su root settings put secure spell_checker_enabled 0
   fi
 
-  if [ "$CURRENT_TIMEZONE" ne "$EMULATOR_TIMEZONE" ]; then
+  if [[ $CURRENT_TIMEZONE != $EMULATOR_TIMEZONE ]]; then
     timeout -t 30 adb -s $DEVICE shell su root settings put global auto_time_zone 0
     timeout -t 30 adb -s $DEVICE shell su root setprop persist.sys.timezone "$EMULATOR_TIMEZONE"
   fi
