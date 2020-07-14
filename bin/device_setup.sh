@@ -1,32 +1,12 @@
 #!/usr/bin/env bash
 
 DL=/tmp/devices_list
-PKG=com.genymobile.gnirehtet
 
 rm -f $DL
 touch -f $DL
 sleep 10
 
 cd / || exit
-
-function setup_gnirehtet {
-  local DEVICE=$1
-
-  if (echo -n | adb -s $d shell pm list packages | grep -q $PKG); then
-    echo Already have $PKG
-  else
-    echo Not installed $PKG
-    echo -n | timeout -t 30 ./gnirehtet install $DEVICE
-    echo -n | timeout -t 30 adb -s $d reverse localabstract:gnirehtet tcp:31416
-    echo -n | timeout -t 30 adb -s $d shell am broadcast -a com.genymobile.gnirehtet.START -n com.genymobile.gnirehtet/.GnirehtetControlReceiver --esa dnsServers 10.120.1.123
-  fi
-}
-
-function cleanup_gnirehtet {
-  local DEVICE=$1
-  echo -n | timeout -t 30  ./gnirehtet stop $DEVICE
-  echo -n | timeout -t 30  ./gnirehtet uninstall $DEVICE
-}
 
 function clean_agoda_staff {
   local DEVICE=$1
@@ -44,6 +24,11 @@ function setup_emulator {
   local DEVICE=$1
   local MARATHON_SERIAL
   MARATHON_SERIAL=$(timeout -t 30 adb -s $DEVICE shell getprop marathon.serialno  | tr -d '\r')
+  SPELL_CHECKER=$(adb -s $DEVICE shell settings get secure spell_checker_enabled)
+  CURRENT_TIMEZONE=$(adb -s $DEVICE shell getprop persist.sys.timezone)"
+  EMULATOR_TIMEZONE="Asia/Bangkok"
+
+
 
   if [ -z "$MARATHON_SERIAL" ]; then
     local SERIAL
@@ -52,8 +37,12 @@ function setup_emulator {
     timeout -t 30 adb -s $DEVICE shell su root pm disable org.chromium.webview_shell
   fi
 
-  timeout -t 30 adb -s $DEVICE shell su root settings put secure spell_checker_enabled 0
-  if [ ! -z "$EMULATOR_TIMEZONE" ]; then
+  if [[ "$SPELL_CHECKER" ne 0 ]]; then
+    timeout -t 30 adb -s $DEVICE shell su root settings put secure spell_checker_enabled 0
+  fi
+
+  if [ "$CURRENT_TIMEZONE" ne "$EMULATOR_TIMEZONE" ]; then
+    timeout -t 30 adb -s $DEVICE shell su root settings put global auto_time_zone 0
     timeout -t 30 adb -s $DEVICE shell su root setprop persist.sys.timezone "$EMULATOR_TIMEZONE"
   fi
 }
@@ -70,14 +59,6 @@ while sleep 1; do
     echo Connected $d
 
     kick_rebooter $d
-
-    if [ "$GNIREHTET_ENABLED" = "true" ]; then
-      echo Gonna setup gnirehtet for $d
-      setup_gnirehtet $d
-    else
-      echo Gonna cleanup gnrehtet for $d
-      cleanup_gnirehtet $d
-    fi
 
     clean_agoda_staff $d
   done
