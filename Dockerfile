@@ -19,7 +19,6 @@ RUN set -xeo pipefail && \
     rm "/etc/apk/keys/sgerrand.rsa.pub" && \
     rm "/root/.wget-hsts" && \
     rm "/tmp/glibc.apk" "/tmp/glibc-bin.apk" && \
-    curl https://sh.rustup.rs -sSf | sh -s -- -y && \
     mkdir -p /opt && \
     rm -r /var/cache/apk/APKINDEX.* && \
     npm install rethinkdb
