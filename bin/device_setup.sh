@@ -28,6 +28,7 @@ function setup_emulator {
     if [ ! -z "$EMULATOR_TIMEZONE" ]; then
       timeout -t 30 adb -s $DEVICE shell su root setprop persist.sys.timezone "$EMULATOR_TIMEZONE"
     fi
+    echo 'Disabling chrome welcome screen'
     timeout -t 30 adb -s $DEVICE shell 'echo "chrome --disable-fre --no-default-browser-check --no-first-run" > /data/local/tmp/chrome-command-line'
   fi
 }
