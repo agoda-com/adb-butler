@@ -1,4 +1,4 @@
 * * * * * /bin/bash /metrics.sh
 * * * * * /bin/bash /usb-rebind.sh
 * * * * * /usr/bin/node /label.js
-* * * * * /usr/bin/node /device-status-monitor.js | /bin/bash /adb-reconnect.sh
+* * * * * /usr/bin/node /device-status-monitor.js | /bin/bash /adb_reconnect.sh
