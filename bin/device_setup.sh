@@ -25,11 +25,11 @@ function setup_emulator {
     timeout -t 30 adb -s $DEVICE shell su root setprop marathon.serialno $SERIAL
     timeout -t 30 adb -s $DEVICE shell su root pm disable org.chromium.webview_shell
     timeout -t 30 adb -s $DEVICE shell su root settings put secure spell_checker_enabled 0
+    timeout -t 30 adb -s $device shell su root settings put secure immersive_mode_confirmations confirmed
     if [ ! -z "$EMULATOR_TIMEZONE" ]; then
       timeout -t 30 adb -s $DEVICE shell su root setprop persist.sys.timezone "$EMULATOR_TIMEZONE"
     fi
-    echo 'Disabling chrome welcome screen'
-    timeout -t 30 adb -s $DEVICE shell 'echo "chrome --disable-fre --no-default-browser-check --no-first-run" > /data/local/tmp/chrome-command-line'
+    timeout -t 30 adb -s $DEVICE shell su root 'echo "chrome --disable-fre --no-default-browser-check --no-first-run" > /data/local/tmp/chrome-command-line'
   fi
 }
 
