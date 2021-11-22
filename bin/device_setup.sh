@@ -12,12 +12,6 @@ function clean_agoda_staff {
   local DEVICE=$1
 
   echo -n | timeout -t 30 adb -s $DEVICE shell rm -rf /sdcard/fork /sdcard/marathon /sdcard/screenshotEspressoTesting
-
-  # echo -n | timeout -t 30 adb -s $DEVICE uninstall com.agoda.mobile.consumer.debug.test
-  # echo -n | timeout -t 30 adb -s $DEVICE uninstall com.agoda.mobile.consumer.debug
-  # echo -n | timeout -t 30 adb -s $DEVICE uninstall com.agoda.mobile.consumer
-  # echo -n | timeout -t 30 adb -s $DEVICE uninstall com.agoda.mobile.swipe.debug.test
-  # echo -n | timeout -t 30 adb -s $DEVICE uninstall com.agoda.mobile.swipe.debug
 }
 
 function setup_emulator {
@@ -34,6 +28,7 @@ function setup_emulator {
     if [ ! -z "$EMULATOR_TIMEZONE" ]; then
       timeout -t 30 adb -s $DEVICE shell su root setprop persist.sys.timezone "$EMULATOR_TIMEZONE"
     fi
+    timeout -t 30 adb -s $DEVICE shell 'echo "chrome --disable-fre --no-default-browser-check --no-first-run" > /data/local/tmp/chrome-command-line'
   fi
 }
 
