@@ -19,6 +19,7 @@ RUN set -xeo pipefail && \
     rm "/etc/apk/keys/sgerrand.rsa.pub" && \
     rm "/root/.wget-hsts" && \
     rm "/tmp/glibc.apk" "/tmp/glibc-bin.apk" && \
+    mkdir -p /opt && \
     rm -r /var/cache/apk/APKINDEX.* && \
     npm install rethinkdb
 
@@ -27,7 +28,7 @@ COPY bin/* /
 COPY supervisor/supervisord.conf /etc
 COPY cron/root /var/spool/cron/crontabs/root
 
-RUN chmod +x /bootstrap.sh /clean.js /label.js /root/.android/update-platform-tools.sh && \
+RUN chmod +x /*.sh /clean.js /label.js /root/.android/update-platform-tools.sh && \
     /root/.android/update-platform-tools.sh
 
 EXPOSE 5037

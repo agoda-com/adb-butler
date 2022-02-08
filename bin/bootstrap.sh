@@ -26,13 +26,13 @@ else
   }
 
   clean() {
-    node /clean.js
+    /clean.js
     exit 0
   }
 
   bootstrap() {
     echo "Initiating bootstrap"
-    timeout -t 20 adb -s $ip install /root/.android/test-butler-app-1.3.1.apk
+    timeout -t 20 adb -s $ip install /root/.android/test-butler-app-2.2.1.apk
   }
 
   trap clean SIGINT
